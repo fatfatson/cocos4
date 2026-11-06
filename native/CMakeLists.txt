@@ -3368,6 +3368,23 @@ if(QNX)
     list(APPEND COCOS_SOURCE_LIST ${ccqnx_SOURCE_LIST})
 endif()
 
+# BEGIN hello-cocos4 minsize patch
+if(CC_MIN_SIZE_STRIP_ENGINE)
+    message(STATUS "Applying hello-cocos4 native min-size source filter")
+    add_compile_definitions(
+        CC_MIN_SIZE_NO_EXTENSIONS=1
+    )
+
+    # Release builds do not instantiate DeviceValidator, so avoid compiling the
+    # validator wrappers and diagnostics into libcocos.so.
+    list(FILTER COCOS_SOURCE_LIST EXCLUDE REGEX ".*/cocos/renderer/gfx-validator/.*")
+
+    # The current game does not use AssetsManagerEx hot update.
+    list(FILTER COCOS_SOURCE_LIST EXCLUDE REGEX ".*/extensions/assets-manager/.*")
+    list(FILTER COCOS_SOURCE_LIST EXCLUDE REGEX ".*/generated/cocos/bindings/auto/jsb_extension_auto\\.(cpp|h)$")
+endif()
+# END hello-cocos4 minsize patch
+
 add_library(${ENGINE_NAME} ${COCOS_SOURCE_LIST})
 
 if(CMAKE_GENERATOR STREQUAL "Xcode")

@@ -27,7 +27,9 @@
 #include "cocos/bindings/auto/jsb_2d_auto.h"
 #include "cocos/bindings/auto/jsb_assets_auto.h"
 #include "cocos/bindings/auto/jsb_cocos_auto.h"
-#include "cocos/bindings/auto/jsb_extension_auto.h"
+#if !CC_MIN_SIZE_NO_EXTENSIONS
+    #include "cocos/bindings/auto/jsb_extension_auto.h"
+#endif
 #include "cocos/bindings/auto/jsb_geometry_auto.h"
 #include "cocos/bindings/auto/jsb_gfx_auto.h"
 #include "cocos/bindings/auto/jsb_gi_auto.h"
@@ -172,7 +174,9 @@ bool jsb_register_all_modules() {
     se->addRegisterCallback(register_all_network_manual);
     se->addRegisterCallback(register_all_xmlhttprequest);
     // extension depend on network
+#if !CC_MIN_SIZE_NO_EXTENSIONS
     se->addRegisterCallback(register_all_extension);
+#endif
     se->addRegisterCallback(register_all_dop_bindings);
     se->addRegisterCallback(register_all_assets);
     se->addRegisterCallback(register_all_assets_manual);
